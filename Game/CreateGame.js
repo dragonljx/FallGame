@@ -10,9 +10,8 @@ export function CreateGame() {
         this.CreateAmbientLight();
         this.CreateGridHelper();
         this.CreateRenderer();
-
         //添加相机控制
-        controls = new THREE.OrbitControls(camera,this.renderer.domElement);
+        //controls = new THREE.OrbitControls(camera,this.renderer.domElement);
     }
     this.CreateScene = function(){
         console.log("场景");
@@ -24,9 +23,11 @@ export function CreateGame() {
         console.log("相机");
         var aspect = window.innerWidth/window.innerHeight;
         camera = new THREE.PerspectiveCamera(45,aspect,1,1000);
-        camera.position.z = 15;
-        camera.position.y = 30;
-        camera.rotateX=10;
+        camera.name = "相机";
+        camera.position.z =20;
+        camera.position.y = 20;
+        camera.rotateX(THREE.Math.degToRad(-30));
+        this.scene.add(camera);
 
        
     }
@@ -43,16 +44,18 @@ export function CreateGame() {
 
     }
     this.CreateGridHelper = function(){
-        console.log("网格助手");
-        grid = new THREE.GridHelper(20,20,'#000000','#aaaaaa');
-        grid.name = '网格助手';
-        this.scene.add(grid);
+        // console.log("网格助手");
+        // grid = new THREE.GridHelper(20,20,'#000000','#aaaaaa');
+        // grid.name = '网格助手';
+        // this.scene.add(grid);
     }
     this.CreateRenderer = function(){
         console.log("渲染");
         this.renderer = new  THREE.WebGLRenderer();
         this.renderer.setSize(window.innerWidth,window.innerHeight);
         document.body.appendChild(this.renderer.domElement);
+        //隐藏并进制滚动条
+        document.documentElement.style.overflow = 'hidden';
 
     }
 

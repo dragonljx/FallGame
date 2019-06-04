@@ -3,35 +3,38 @@ import { CreateGame } from '../Game/CreateGame.js';
 import { GameManager } from '../Game/GameManager.js';
 
 
-var game,manager;
+var game,manager,start;
+//常量参数
+var speed = 0.5;
+
 
 function main(){
     game = new CreateGame();
     game.Start();
-
-
-    // var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-    // var material = new THREE.MeshNormalMaterial();
-    // material.flatShading = false;
-
     var loading = new ResourceLoading(GetModels);
-
+    //按键触发
     document.addEventListener('keydown', CreateKeyEvent, false);
     window.scene =  game.scene;
     //将需要执行update的方法添加入
     update();
-    
+    // var jj = new THREE.Mesh();
+    // jj.setRotationFromEuler()
+
+
 }
 function GetModels(models){
     manager = new GameManager();
-    manager.Start(models);
+    manager.Start(models,speed);
+
 }
 
-function update(){
-    //cube.rotateY(0.1);
+function update(time){
+    var progress = (time - start)*0.002;
+    start = time;
+
     if (manager!=null) {
         
-        manager.Update();
+        manager.Update(progress);
     }
     requestAnimationFrame(update);
     game.Update();

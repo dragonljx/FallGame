@@ -14,6 +14,7 @@ export function ResourceLoading(action){
                     for (let i = 0; i < child.children.length; i++) {
                         var geometry = child.children[i].geometry;
                         geometry.scale(0.01,0.01,0.01);
+                        geometry.name = child.children[i].name;                        
                         allGeometry.push(geometry);
 
                     }
