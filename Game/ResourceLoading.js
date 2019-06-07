@@ -5,64 +5,41 @@ export function ResourceLoading(action){
     function loadModel (){
         var allGeometry = new Array()
         var loader = new THREE.FBXLoader();
-        loader.load("/Game/Models/BaseModel.fbx",
+        loader.load("/Game/Models/BaseModelX.fbx",
         function(obj){ 
             obj.traverse(function(child){
-                
+
                 if(child.isGroup){
-                    
+                    var length = 0;
+                    var meshChart = Array();
                     for (let i = 0; i < child.children.length; i++) {
+
                         var geometry = child.children[i].geometry;
+                        geometry.name = child.children[i].name;
                         geometry.scale(0.01,0.01,0.01);
-                        geometry.name = child.children[i].name;                        
-                        allGeometry.push(geometry);
+                        
+                        var index = geometry.name.split("_");
+                        if(!allGeometry.hasOwnProperty(index[0])){
+
+                            allGeometry[index[0]] = [geometry];
+                            meshChart[length] = index[0];
+                            length++;
+                        }else{
+                            if(index[1] == "0"){
+
+                                allGeometry[index[0]].unshift(geometry);
+                            }else{
+                                allGeometry[index[0]].push(geometry);
+                                
+                            }
+                        }
 
                     }
+                    allGeometry["chart"] = meshChart;
                 }
 
             });
             action(allGeometry)
-
-            // var mesha = new THREE.Mesh( allGeometry[0]);
-            // mesha.name = "A";
-            // mesha.scale.set(0.01,0.01,0.01);
-            // //scene.add( mesha );
-
-            // var meshb = new THREE.Mesh( allGeometry[1]);
-            // meshb.name = "B";
-            // meshb.position.y = 1;
-            // meshb.scale.set(0.005,0.005,0.005);
-            //scene.add( meshb );
-
-
-            // var mesha = new THREE.Geometry().fromBufferGeometry(allGeometry[0]);
-
-
-            
-            // var meshb = new THREE.Geometry().fromBufferGeometry(allGeometry[1]);
-            // meshb.scale(0.5,1,0.5);
-
-            
-            // var aBSP = new ThreeBSP(mesha);
-            // var bBSP = new ThreeBSP(meshb);
-            // var meshA = aBSP.toMesh();
- 
-            // meshA.position.x = 5;
-            // scene.add(meshA);
-
-            // var meshB = bBSP.toMesh();
- 
-            // meshB.position.x = -5;
-            // scene.add(meshB);
-            
-            // var resultBSP = aBSP.subtract(bBSP);
-            // var result = resultBSP.toMesh();
-            // result.geometry.computeFaceNormals();
-            // result.geometry.computeVertexNormals();
-
-            // var ma = new THREE.MeshPhongMaterial({ color: 0xdddddd, specular: 0x009900, shininess: 30, flatShading: true } );
-            // result.material = ma;
-            // scene.add(result);
         });
         
         
